@@ -101,6 +101,7 @@
     @apply bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent;
 }
 
+
 .desc {
     @apply mt-5 text-lg text-gray-600 sm:text-xl max-w-2xl;
 }
@@ -168,3 +169,18 @@
 .flex-between {
     @apply flex justify-between items-center;
 }
+.form-input {
+    @apply hover:bg-gray-200
+    transition-all duration-200 ease-linear cursor-pointer
+}
+
+.orange_button{
+    @apply hover:bg-orange-800
+    transition-all duration-200 ease-linear
+}
+/*.blue_gradient_transition {*/
+/*    @apply text-white bg-gradient-to-r from-blue-600 to-cyan-600*/
+/*    hover:bg-gradient-to-br hover:from-cyan-600 hover:to-blue-600*/
+/*    transition-all duration-500 delay-500 ease-linear*/
+/*}*/
+
