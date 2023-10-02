@@ -1,6 +1,11 @@
 import {FieldValues, useForm} from "react-hook-form";
 import Link from "next/link";
-function Form({submitting, setPost, setSubmitting,post}) {
+import {useRouter} from "next/navigation";
+import {useSession} from "next-auth/react";
+function Form({submitting, setSubmitting}) {
+    const {data:session}=useSession()
+    const router = useRouter()
+
     const {
         register,
         handleSubmit,
@@ -8,28 +13,24 @@ function Form({submitting, setPost, setSubmitting,post}) {
         reset,
     } = useForm()
     const onSubmit= async (data )=>{
-        setSubmitting(true)
-
         try{
             const response = await fetch('/api/prompt/new',
                 {
                     method:'POST',
                     body:JSON.stringify({
-                        prompt:post.prompt,
+                        prompt:data.prompt,
                         userId: session?.user.id,
-                        tag:post.tag
+                        tag:data.tag
                     })
                 }
                 )
+            console.log('response', response)
             if(response.ok){
                 router.push('/')
             }
 
         }catch (error){
             console.log(`Error: ${error}`)
-        }
-        finally{
-            setSubmitting(false)
         }
         reset()
     }
@@ -63,7 +64,7 @@ function Form({submitting, setPost, setSubmitting,post}) {
 }
 
 
-const FormComponent = ({ type, post, submitting, setPost, setSubmitting}) => {
+const FormComponent = ({ type, submitting, setSubmitting}) => {
     return(
         <section className={'w-full max-w-full flex-start flex-col'}>
             <h1 className={'head_text text-left'}>
@@ -74,12 +75,7 @@ const FormComponent = ({ type, post, submitting, setPost, setSubmitting}) => {
             <p className={'desc text-left max-w-md'}>
                 {type} and share tremendous prompts with the world, and let your imagination run wild with any AI-powered platform.
             </p>
-            <Form
-                post={post}
-                submitting={submitting}
-                setPost={setPost}
-                setSubmitting={setSubmitting}
-            />
+            <Form/>
         </section>
     )
 }
