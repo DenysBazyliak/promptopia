@@ -14,10 +14,25 @@ const MyProfile = () => {
     const handleEdit = (post)=>{
         router.push(`/edit-prompt?id=${post._id}`)
     }
-    const handleDelete = async ()=>{
+    const handleDelete = async (post)=> {
+        const hasConfirmed = confirm('Are you sure you want to delete this prompt?')
 
+        if (hasConfirmed) {
+            try {
+               await fetch(`/api/prompt/${post._id.toString()}`,
+                    {
+                        method: 'DELETE'
+                    }
+                )
+                const filteredPosts = myPostArray.filter((p)=>{
+                    return p._id!==post._id
+                })
+                setMyPostArray(filteredPosts)
+            } catch (error) {
+                console.log(`Error: ${error}`)
+            }
+        }
     }
-
     useEffect(()=>{
         const fetchPosts = async ()=>{
             const response = await fetch(`/api/users/${session?.user.id}/posts`);
