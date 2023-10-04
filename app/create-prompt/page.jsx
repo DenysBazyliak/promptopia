@@ -1,11 +1,11 @@
 'use client'
 
 
-import Form from '../../components/Form'
+import FormWrapper from '../../components/Form'
 
 const CreatePrompt = () => {
     return (
-        <Form
+        <FormWrapper
             type={'Create'}
         />
     )
