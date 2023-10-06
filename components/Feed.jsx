@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import PromptCard from "./PromptCard";
+import { match } from "assert";
 
 const PromptCardList = ({ posts, handleTagClick }) => {
   return (
@@ -19,6 +20,7 @@ const PromptCardList = ({ posts, handleTagClick }) => {
 
 const Feed = () => {
   const [postArray, setPostArray] = useState([]);
+  const [filteredPostArray, setFilteredPostArray] = useState(null);
   useEffect(() => {
     const fetchPosts = async () => {
       const response = await fetch("/api/prompt");
@@ -32,6 +34,7 @@ const Feed = () => {
     register,
     formState: { errors, isSubmitting },
   } = useForm();
+  console.log("filteredPostArray", filteredPostArray);
   return (
     <>
       <section>
@@ -39,22 +42,39 @@ const Feed = () => {
           <input
             {...register("prompt", {
               required: true,
-              onChange: (e) => {},
+              onChange: (e) => {
+                return e.target.value === ""
+                  ? setFilteredPostArray(null)
+                  : setFilteredPostArray(
+                      postArray?.filter((post) => {
+                        let regex = new RegExp(e.target.value, "gi");
+                        return (
+                          post.creator.username +
+                          " " +
+                          post.prompt +
+                          " " +
+                          post.tag
+                        ).match(regex)
+                          ? post
+                          : false;
+                      })
+                    );
+              },
             })}
             type="text"
-            placeholder={"Search for a tag or a username"}
+            placeholder={"Search for a tag or a prompt"}
             className={
               "px-4 py-2 rounded form-input bg-gray-100 w-full placeholder:text-center"
             }
           />
         </form>
 
-        <PromptCardList posts={postArray} handleTagClick={() => {}} />
+        <PromptCardList
+          posts={filteredPostArray ? filteredPostArray : postArray}
+          handleTagClick={() => {}}
+        />
       </section>
     </>
   );
 };
-// useState()
-// useEffect()
-export default Feed
-
+export default Feed;
