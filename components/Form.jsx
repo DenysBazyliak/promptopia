@@ -31,10 +31,9 @@ function Form({ type, promptValues, onPromptSubmit }) {
   };
 
   return (
-    <>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className={"mt-10 w-full max-w-2xl flex flex-col gap-7 glassmorphism"}
+        className={"mt-10 w-full flex flex-col gap-7 glassmorphism search_field"}
       >
         <label>
           <span
@@ -80,7 +79,6 @@ function Form({ type, promptValues, onPromptSubmit }) {
           </button>
         </div>
       </form>
-    </>
   );
 }
 
