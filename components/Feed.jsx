@@ -2,25 +2,13 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import PromptCard from "./PromptCard";
-import { match } from "assert";
-
-const PromptCardList = ({ posts, handleTagClick }) => {
-  return (
-    <div className={"mt-16 prompt_layout"}>
-      {posts.map((post) => (
-        <PromptCard
-          key={post?._id}
-          post={post}
-          handleTagClick={handleTagClick}
-        />
-      ))}
-    </div>
-  );
-};
+import { setFilterText } from "../helpers/HighlightedText";
 
 const Feed = () => {
   const [postArray, setPostArray] = useState([]);
   const [filteredPostArray, setFilteredPostArray] = useState(null);
+  const [keyword, setKeyword] = useState("");
+
   useEffect(() => {
     const fetchPosts = async () => {
       const response = await fetch("/api/prompt");
@@ -43,6 +31,7 @@ const Feed = () => {
             {...register("prompt", {
               required: true,
               onChange: (e) => {
+                setKeyword(() => e.target.value);
                 return e.target.value === ""
                   ? setFilteredPostArray(null)
                   : setFilteredPostArray(
@@ -64,7 +53,7 @@ const Feed = () => {
             type="text"
             placeholder={"Search for a tag or a prompt"}
             className={
-              "px-4 py-2 rounded form-input bg-gray-100 w-full placeholder:text-center"
+              "px-4 py-2 rounded form-input bg-gray-100 search_input placeholder:text-center "
             }
           />
         </form>
@@ -72,9 +61,26 @@ const Feed = () => {
         <PromptCardList
           posts={filteredPostArray ? filteredPostArray : postArray}
           handleTagClick={() => {}}
+          keyword={keyword}
         />
       </section>
     </>
   );
 };
+
+const PromptCardList = ({ posts, handleTagClick, keyword }) => {
+  return (
+    <div className={"mt-16 prompt_layout"}>
+      {posts.map((post) => (
+        <PromptCard
+          key={post?._id}
+          post={post}
+          handleTagClick={handleTagClick}
+          keyword={keyword}
+        />
+      ))}
+    </div>
+  );
+};
+
 export default Feed;

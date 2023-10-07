@@ -4,15 +4,26 @@ import { useState } from "react";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
 import { usePathname, useRouter } from "next/navigation";
+import HighlightedText from "../helpers/HighlightedText";
 
-const PromptCard = ({ post, handleTagClick, handleEdit, handleDelete }) => {
+const PromptCard = ({
+  post,
+  handleTagClick,
+  handleEdit,
+  handleDelete,
+  keyword,
+}) => {
   const [copied, setCopied] = useState(false);
   const pathName = usePathname();
   const { data: session } = useSession();
-  const router = useRouter();
+
+  const username = post.creator.username;
+  const prompt = post.prompt;
+  const tag = post.tag;
+
   const handleCopy = () => {
     setCopied(true);
-    navigator.clipboard.writeText(post.prompt);
+    navigator.clipboard.writeText(prompt);
     setTimeout(() => setCopied(false), 2000);
   };
   return (
@@ -32,8 +43,11 @@ const PromptCard = ({ post, handleTagClick, handleEdit, handleDelete }) => {
           />
           <div className={"flex flex-col"}>
             <h3 className={"font-satoshi font-semibold text-gray-900"}>
-              {post.creator.username}
+              <HighlightedText text={username} keywords={keyword}>
+                {username}
+              </HighlightedText>
             </h3>
+
             <p className={"font-inter text-sm text-gray-500"}>
               {post.creator.email}
             </p>
@@ -48,13 +62,18 @@ const PromptCard = ({ post, handleTagClick, handleEdit, handleDelete }) => {
           />
         </div>
       </div>
-      <p className={"my-4 font-satoshi text-sm text-gray-700"}>{post.prompt}</p>
+      <p className={"my-4 font-satoshi text-sm text-gray-700"}>
+        <HighlightedText text={prompt} keywords={keyword}>
+          {prompt}
+        </HighlightedText>
+      </p>
       <p
         className={"font-inter text-sm blue_gradient cursor-pointer"}
-        onClick={() => handleTagClick && handleTagClick(post.tag)}
+        onClick={() => handleTagClick && handleTagClick(tag)}
       >
-        #{post.tag}
+        <HighlightedText text={tag} keywords={keyword}>{tag}</HighlightedText>
       </p>
+
       {session?.user.id === post.creator._id && pathName === "/profile" && (
         <div className={"mt-5 flex-center gap-4 border-t border-gray-100 pt-3"}>
           <p
