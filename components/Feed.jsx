@@ -1,16 +1,18 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import {useContext, useEffect, useState} from "react";
 import { useForm } from "react-hook-form";
 
 import { cn } from "../helpers/clsx-tw-merge";
 
-import PromptCard from "./PromptCard";
+import PromptCardList from "./PromptCardList/PromptCardList";
+import {KeywordContext} from "../contexts/KeywordContextProvider";
 
 const Feed = ({ cssProps='' }) => {
   const [postArray, setPostArray] = useState([]);
   const [filteredPostArray, setFilteredPostArray] = useState(null);
-  const [keyword, setKeyword] = useState("");
+
+  const {setKeyword}= useContext(KeywordContext)
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -56,35 +58,20 @@ const Feed = ({ cssProps='' }) => {
             type="text"
             placeholder={"Search for a tag or a prompt"}
             className={cn(
-              "px-4 py-2 rounded form-input bg-gray-100 w-full placeholder:text-center focus:bg-gray-100",
+              "px-4 py-2 my-4 rounded form-input bg-gray-100 w-full placeholder:text-center ",
               cssProps
             )}
           />
         </form>
-
-        <PromptCardList
-          posts={filteredPostArray ? filteredPostArray : postArray}
-          handleTagClick={() => {}}
-          keyword={keyword}
-        />
+          <PromptCardList
+              posts={filteredPostArray ? filteredPostArray : postArray}
+              handleTagClick={() => {}}
+          />
       </section>
     </>
   );
 };
 
-const PromptCardList = ({ posts, handleTagClick, keyword }) => {
-  return (
-    <div className={"mt-16 prompt_layout"}>
-      {posts.map((post) => (
-        <PromptCard
-          key={post?._id}
-          post={post}
-          handleTagClick={handleTagClick}
-          keyword={keyword}
-        />
-      ))}
-    </div>
-  );
-};
+
 
 export default Feed;

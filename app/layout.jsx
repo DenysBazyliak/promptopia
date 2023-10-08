@@ -1,6 +1,8 @@
-import "@styles/globals.css";
 import Nav from "components/Nav";
 import Provider from "components/Provider";
+
+import "@styles/globals.css";
+import KeywordContextProvider from "../contexts/KeywordContextProvider";
 
 export const metadata = {
   title: "Promptopia",
@@ -17,11 +19,11 @@ const RootLayout = ({ children }) => {
           </div>
           <main className={"app"}>
             <Nav />
-            {children}
+            <KeywordContextProvider>{children}</KeywordContextProvider>
           </main>
         </Provider>
       </body>
     </html>
   );
 };
-export default RootLayout
+export default RootLayout;

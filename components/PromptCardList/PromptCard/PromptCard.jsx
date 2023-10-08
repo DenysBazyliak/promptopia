@@ -1,21 +1,23 @@
 "use client";
 
-import { useState } from "react";
+import {useContext, useState} from "react";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
 import { usePathname, useRouter } from "next/navigation";
-import HighlightedText from "../helpers/HighlightedText";
+import HighlightedText from "../../../helpers/HighlightedText";
+import {KeywordContext} from "../../../contexts/KeywordContextProvider";
 
 const PromptCard = ({
   post,
   handleTagClick,
   handleEdit,
-  handleDelete,
-  keyword,
+  handleDelete
 }) => {
   const [copied, setCopied] = useState(false);
   const pathName = usePathname();
   const { data: session } = useSession();
+
+  const {keyword}=useContext(KeywordContext)
 
   const username = post.creator.username;
   const prompt = post.prompt;

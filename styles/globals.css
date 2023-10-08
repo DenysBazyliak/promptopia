@@ -170,7 +170,7 @@
     @apply flex justify-between items-center;
 }
 .form-input {
-    @apply hover:bg-gray-200
+    @apply hover:bg-gray-300 focus:bg-gray-200
     transition-all duration-200 ease-linear cursor-pointer
 }
 
@@ -178,7 +178,9 @@
     @apply hover:bg-orange-800
     transition-all duration-200 ease-linear
 }
-.search_field{
+
+.form_width{
     @apply 2xl:w-[1400px] xl:w-[1200px] lg:w-[960px] md:w-[700px] sm:w-[580px]
 }
+
 
