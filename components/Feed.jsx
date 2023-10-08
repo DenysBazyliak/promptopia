@@ -1,10 +1,13 @@
 "use client";
+
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import PromptCard from "./PromptCard";
-import { setFilterText } from "../helpers/HighlightedText";
 
-const Feed = () => {
+import { cn } from "../helpers/clsx-tw-merge";
+
+import PromptCard from "./PromptCard";
+
+const Feed = ({ cssProps='' }) => {
   const [postArray, setPostArray] = useState([]);
   const [filteredPostArray, setFilteredPostArray] = useState(null);
   const [keyword, setKeyword] = useState("");
@@ -26,7 +29,7 @@ const Feed = () => {
   return (
     <>
       <section>
-        <form className={"relative w-full    flex-center"}>
+        <form className={"relative form_width flex-center"}>
           <input
             {...register("prompt", {
               required: true,
@@ -52,9 +55,10 @@ const Feed = () => {
             })}
             type="text"
             placeholder={"Search for a tag or a prompt"}
-            className={
-              "px-4 py-2 rounded form-input bg-gray-100 search_input placeholder:text-center "
-            }
+            className={cn(
+              "px-4 py-2 rounded form-input bg-gray-100 w-full placeholder:text-center focus:bg-gray-100",
+              cssProps
+            )}
           />
         </form>
 
